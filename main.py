@@ -12,7 +12,7 @@ def main():
     for r in records:
         print(r)
 
-    print("\n=== JOIN Students + AcademicRecords (Forma 1 - con decorador) ===")
+    print("\n=== JOIN Students + AcademicRecords ===")
     full_records = get_full_records()
     print(full_records)
 

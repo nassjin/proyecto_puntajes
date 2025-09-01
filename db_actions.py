@@ -26,9 +26,7 @@ def selectAcademicRecords() -> list[dict] | None:
     return tryExecuteSelect(sql)
 
 def get_full_records() -> list[dict]:
-    """
-    Forma 2: JOIN reutilizando tryExecuteSelect.
-    """
+
     sql = """
         SELECT
             s.id AS student_id,
