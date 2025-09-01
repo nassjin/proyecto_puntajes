@@ -11,6 +11,7 @@ from pymysql import Connection
 
 load_dotenv()
 
+#Variables de Conexion
 DB_USER = environ.get('DB_USER')
 DB_PASS =environ.get('DB_PASS')
 DB_HOST = environ.get('DB_HOST')
@@ -20,7 +21,7 @@ DB_NAME = environ.get('DB_NAME')
 def dbConnectionDecoration(func: Callable[..., Any]) -> Callable[..., Any]:
     def wrapper(*args , **kwargs) -> Any:
         try:
-
+            #Conexion a Mysql
             conexion: Connection = pymysql.connect(
                 user=DB_USER,
                 password=DB_PASS,

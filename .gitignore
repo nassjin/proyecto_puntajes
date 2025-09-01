@@ -1,42 +1,49 @@
-# Archivos de entorno
-.env
-.env.*
-
-# Archivos de Python
+# ============================
+# Python
+# ============================
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 *.so
 *.egg
 *.egg-info/
 dist/
 build/
-.eggs/
 
-# Configuración de PyCharm / IntelliJ
-.idea/
-*.iml
-
-# Virtualenv
-venv/
-ENV/
-env/
+# ============================
+# Entornos virtuales
+# ============================
 .venv/
+venv/
+env/
 
-# Archivos de logs
-*.log
-
-# Archivos de bases de datos locales
+# ============================
+# Archivos de configuración / entorno
+# ============================
+.env
+.env.*    # Ej: .env.local, .env.dev
 *.sqlite3
-*.db
 
-# Archivos del sistema
-.DS_Store
-Thumbs.db
+# Mantén este para compartir ejemplo de variables
+!.env.example
 
-# Jupyter notebooks checkpoints
-.ipynb_checkpoints/
+# ============================
+# IDEs / Editores
+# ============================
+# PyCharm / IntelliJ
+.idea/
 
-# Coverage / testing
-.cove
+# VSCode
+.vscode/
+
+# ============================
+# Logs
+# ============================
+*.log
+*.out
+*.err
+
+# ============================
+# Otros
+# ============================
+.DS_Store       # macOS
+Thumbs.db       # Windows
