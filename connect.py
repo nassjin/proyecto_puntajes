@@ -8,6 +8,7 @@ from typing import Callable, Any
 from dotenv import load_dotenv
 import pymysql.cursors
 from pymysql import Connection
+import logging
 
 load_dotenv()
 
@@ -35,5 +36,6 @@ def dbConnectionDecorator(func: Callable[..., Any]) -> Callable[..., Any]:
             result = func(conexion, *args, **kwargs)
             return result
         except Exception as e:
-            return {"error": str(e)}
+            logging.error(f"Error en la conexión DB: {e}")
+            return None
     return wrapper

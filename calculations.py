@@ -2,9 +2,9 @@
 
 from typing import Any,Dict
 
-#Devuelve el valor no existente o en None por un calor por defecto
+#Devuelve el valor no existente o en None por un valor por defecto
 
-def get_value_default(record: Dict[str, Any], key: str, default=0) -> Any:
+def GET_VALUE_DEFAULT(record: Dict[str, Any], key: str, default=0) -> Any:
     value = record.get(key)
     return value if value is not None else value
 
@@ -39,14 +39,14 @@ def CALCULAR_PUNTAJE_ANOTACIONES(record: Dict[str, Any]) -> int:
         return  max(puntaje_final, 0)
 
     puntaje_year1 = PUNTAJE_ANUAL(
-        get_value_default(record, 'anotaciones_leves_1', 0),
-        get_value_default(record, 'anotaciones_graves_1', 0),
-        get_value_default(record, 'anotaciones_gravisimas_1', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_leves_1', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_graves_1', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_gravisimas_1', 0),
     )
     puntaje_year2 = PUNTAJE_ANUAL(
-        get_value_default(record, 'anotaciones_leves_2', 0),
-        get_value_default(record, 'anotaciones_graves_2', 0),
-        get_value_default(record, 'anotaciones_gravisimas_2', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_leves_2', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_graves_2', 0),
+        GET_VALUE_DEFAULT(record, 'anotaciones_gravisimas_2', 0),
     )
 
     return int((puntaje_year1 * puntaje_year2)/ 2)

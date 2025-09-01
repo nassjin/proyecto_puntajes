@@ -2,6 +2,7 @@
 
 from pymysql import Connection
 from connect import dbConnectionDecorator
+import logging
 
 @dbConnectionDecorator
 def tryExecuteSelect(conexion: Connection, sql, params=None):
@@ -11,7 +12,8 @@ def tryExecuteSelect(conexion: Connection, sql, params=None):
                 cursor.execute(sql, params)
                 return cursor.fetchall()
             except Exception as e:
-                print(f"Error executing SQL: {e}")
+
+                logging.error(f"Error executing SQL: {e}")
                 return False
 
 
