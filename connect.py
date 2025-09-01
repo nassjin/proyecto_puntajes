@@ -18,7 +18,7 @@ DB_HOST = environ.get('DB_HOST')
 DB_PORT = int(environ.get('DB_PORT'))
 DB_NAME = environ.get('DB_NAME')
 
-def dbConnectionDecoration(func: Callable[..., Any]) -> Callable[..., Any]:
+def dbConnectionDecorator(func: Callable[..., Any]) -> Callable[..., Any]:
     def wrapper(*args , **kwargs) -> Any:
         try:
             #Conexion a Mysql

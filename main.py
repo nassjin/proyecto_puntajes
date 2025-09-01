@@ -1,7 +1,12 @@
-from db_actions import selectStudents, selectAcademicRecords,get_full_records
-
+from db_actions import selectStudents, selectAcademicRecords, get_full_records
 
 def main():
+    print("\n=== JOIN Students + AcademicRecords ===")
+    full_records = get_full_records()
+    for record in full_records:
+     print(record)
+
+    """
     print("=== Todos los estudiantes ===")
     students = selectStudents()
     for s in students:
@@ -11,12 +16,7 @@ def main():
     records = selectAcademicRecords()
     for r in records:
         print(r)
-
-    print("\n=== JOIN Students + AcademicRecords ===")
-    full_records = get_full_records()
-    print(full_records)
-
-
+    """
 
 if __name__ == "__main__":
     main()

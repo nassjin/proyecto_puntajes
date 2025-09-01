@@ -1,9 +1,9 @@
 #Definiciones para interactuar con la base de datos
 
 from pymysql import Connection
-from connect import dbConnectionDecoration
+from connect import dbConnectionDecorator
 
-@dbConnectionDecoration
+@dbConnectionDecorator
 def tryExecuteSelect(conexion: Connection, sql, params=None):
     with conexion:
             try:
@@ -25,7 +25,7 @@ def selectAcademicRecords() -> list[dict] | None:
     sql = "SELECT * FROM AcademicRecords"
     return tryExecuteSelect(sql)
 
-def get_full_records() -> list[dict]:
+def get_full_records() -> list[dict]| None:
 
     sql = """
         SELECT
