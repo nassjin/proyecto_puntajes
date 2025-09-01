@@ -1,0 +1,38 @@
+#################################################################
+#connect.py
+#Maneja la conexion a la base de datos
+##################################################################
+
+from os import environ
+from typing import Callable, Any
+from dotenv import load_dotenv
+import pymysql.cursors
+from pymysql import Connection
+
+load_dotenv()
+
+DB_USER = environ.get('DB_USER')
+DB_PASS =environ.get('DB_PASS')
+DB_HOST = environ.get('DB_HOST')
+DB_PORT = int(environ.get('DB_PORT'))
+DB_NAME = environ.get('DB_NAME')
+
+def dbConnectionDecoration(func: Callable[..., Any]) -> Callable[..., Any]:
+    def wrapper(*args , **kwargs) -> Any:
+        try:
+
+            conexion: Connection = pymysql.connect(
+                user=DB_USER,
+                password=DB_PASS,
+                host=DB_HOST,
+                port=DB_PORT,
+                database=DB_NAME,
+                charset='utf8mb4',
+                cursorclass=pymysql.cursors.DictCursor
+            )
+
+            result = func(conexion, *args, **kwargs)
+            return result
+        except Exception as e:
+            return {"error": str(e)}
+    return wrapper

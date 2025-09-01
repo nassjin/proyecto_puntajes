@@ -1,0 +1,42 @@
+# Archivos de entorno
+.env
+.env.*
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Configuración de PyCharm / IntelliJ
+.idea/
+*.iml
+
+# Virtualenv
+venv/
+ENV/
+env/
+.venv/
+
+# Archivos de logs
+*.log
+
+# Archivos de bases de datos locales
+*.sqlite3
+*.db
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Coverage / testing
+.cove
