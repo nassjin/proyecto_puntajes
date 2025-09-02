@@ -53,7 +53,7 @@ def calcular_anotaciones(record: Dict[str, Any]) -> int:
         get_value_default(record, 'anotaciones_gravisimas_2', 0),
     )
 
-    return int((puntaje_year1 + puntaje_year2)/ 2)
+    return round((puntaje_year1 + puntaje_year2)/ 2)
 
 #Calcular promedios (lenguaje, matemática y general) de 1° y 2°
 
