@@ -1,14 +1,14 @@
-from connect import dbConnectionDecoration
+from connect import dbConnectionDecorator
 
 # Probar la conexión y ver las tablas disponibles
-@dbConnectionDecoration
+@dbConnectionDecorator
 def ver_tablas(conexion):
     with conexion.cursor() as cursor:
         cursor.execute("SHOW TABLES;")
         return cursor.fetchall()
 
 # Probar leer registros de una tabla concreta (ejemplo: students)
-@dbConnectionDecoration
+@dbConnectionDecorator
 def ver_registros(conexion, tabla):
     with conexion.cursor() as cursor:
         cursor.execute(f"SELECT * FROM {tabla};")
