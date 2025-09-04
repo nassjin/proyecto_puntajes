@@ -36,7 +36,7 @@ def export_excel(records: list[dict], filename: str = "puntajes_export.xlsx") ->
         "Prom. Lneguaje 1", "Prom. Lenguaje 2",
         "Prom. Matemática 1", "Prom. Matemática 2",
         "Prom. General 1", "Prom. General 2",
-        "Prom.Tecno 1", "Prom.Tecno 2",
+        "Prom.Tecno 1", "Prom.Tecno 2", "Punt. Prueba Tecno",
         "SIMCE Lenguaje 2", "SIMCE Matemática 2",
         "Asistencia 1", "Asistencia 2",
         "Puntaje Entrevistas"
@@ -65,14 +65,28 @@ def export_excel(records: list[dict], filename: str = "puntajes_export.xlsx") ->
 
         #fila de detalles
         ws_detalle.append([
-            record.get("rut"), record.get("full_name"), record.get("course"),
-            record.get("anotaciones_leves_1"), record.get("anotaciones_graves_1"), record.get("anotaciones_gravisimas_2"),
-            record.get("anoraciones_leves_2"), record.get("anotaciones_graves_2"), record.get("anotaciones_gravisimas_2"),
-            record.get("promedio_lenguaje_1"), record.get("promedio_lenguaje_2"),
-            record.get("promedio_matematica_1"), record.get("promedio_matematica_2"),
-            record.get("promedio_general_1"), record.get("promedio_general_2"),
-            record.get("promedio_tencologia_1"), record.get("promedio_tencologia_2"), record.get("promedio_prueba_tecnologia"),
-            record.get("puntaje_simce_lenguaje_2"), record.get("puntaje_simce_matematica_2"),
+            record.get("rut"),
+            record.get("full_name"),
+            record.get("course"),
+            record.get("anotaciones_leves_1"),
+            record.get("anotaciones_graves_1"),
+            record.get("anotaciones_gravisimas_2"),
+            record.get("anotaciones_leves_2"),
+            record.get("anotaciones_graves_2"),
+            record.get("anotaciones_gravisimas_2"),
+            record.get("promedio_lenguaje_1"),
+            record.get("promedio_lenguaje_2"),
+            record.get("promedio_matematica_1"),
+            record.get("promedio_matematica_2"),
+            record.get("promedio_general_1"),
+            record.get("promedio_general_2"),
+            record.get("promedio_tecnologia_1"),
+            record.get("promedio_tecnologia_2"),
+            record.get("puntaje_prueba_tecnologia"),
+            record.get("puntaje_simce_lenguaje_2"),
+            record.get("puntaje_simce_matematica_2"),
+            record.get("asistencia_1"),
+            record.get("asistencia_2"),
             record.get("puntaje_entrevistas")
         ])
 
