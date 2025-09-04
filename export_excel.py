@@ -63,6 +63,37 @@ def export_excel(records: list[dict], filename: str = "puntajes_export.xlsx") ->
             puntajes["entrevistas"], puntajes["total_final_puntajes"]
         ])
 
+        #fila de detalles
+        ws_detalle.append([
+            record.get("rut"), record.get("full_name"), record.get("course"),
+            record.get("anotaciones_leves_1"), record.get("anotaciones_graves_1"), record.get("anotaciones_gravisimas_2"),
+            record.get("anoraciones_leves_2"), record.get("anotaciones_graves_2"), record.get("anotaciones_gravisimas_2"),
+            record.get("promedio_lenguaje_1"), record.get("promedio_lenguaje_2"),
+            record.get("promedio_matematica_1"), record.get("promedio_matematica_2"),
+            record.get("promedio_general_1"), record.get("promedio_general_2"),
+            record.get("promedio_tencologia_1"), record.get("promedio_tencologia_2"), record.get("promedio_prueba_tecnologia"),
+            record.get("puntaje_simce_lenguaje_2"), record.get("puntaje_simce_matematica_2"),
+            record.get("puntaje_entrevistas")
+        ])
+
+        #Ajuste ancho columnas
+        for ws in [ws_resultado, ws_detalle]:
+            for col in ws.columns:
+                max_len = 0
+                col_letter = col[0].column_letter
+                for cell in col:
+                    try:
+                        if cell.value:
+                            max_len = max(max_len, len(str(cell.value)))
+                    except Exception:
+                        pass
+                ws.column_dimensions[col_letter].width = max_len + 2
+
+        #Guardar Archivo
+        wb.save(filename)
+        print(f"✅ Archivo Excel generado: {filename}")
+
+
 
 
 
