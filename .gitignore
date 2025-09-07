@@ -47,3 +47,7 @@ env/
 # ============================
 .DS_Store       # macOS
 Thumbs.db       # Windows
+
+
+~$*.xlsx
+*.tmp
