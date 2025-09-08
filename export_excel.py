@@ -1,4 +1,5 @@
 import openpyxl
+import os
 from openpyxl.styles import Font, PatternFill
 from calculations import calcular_puntaje_total
 
@@ -52,7 +53,7 @@ def export_excel(records: list[dict], filename: str = "puntajes_export.xlsx") ->
 
     #Rellenar datos
     for record in records:
-        puntajes = calcular_puntaje_total(record)
+        puntajes = calcular_puntaje_total(record, records)
 
         #fila de resultados
         ws_resultado.append([
@@ -103,9 +104,16 @@ def export_excel(records: list[dict], filename: str = "puntajes_export.xlsx") ->
                         pass
                 ws.column_dimensions[col_letter].width = max_len + 2
 
-        #Guardar Archivo
-        wb.save(filename)
-        print(f"✅ Archivo Excel generado: {filename}")
+        #verificar si el archivo ya existe y crear uno nuevo
+        if os.path.exists(filename):
+            base, ext = os.path.splitext(filename)
+            i =1
+            while os.path.exists(f"{base}_{i}{ext}"): i += 1
+            filename = f"{base}_{i}{ext}"
+
+    #Guardar Archivo
+    wb.save(filename)
+    print(f"✅ Archivo Excel generado: {filename}")
 
 
 

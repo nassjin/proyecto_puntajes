@@ -1,6 +1,6 @@
 #Calculation.py
 
-from typing import Any,Dict
+from typing import Any,Dict, List
 
 #Devuelve el valor no existente o en None por un valor por defecto
 
@@ -29,25 +29,17 @@ def normalizar_calificaciones(value, escala_max=7) -> float:
 #Parte con 45 puntos por años y se descuenta segun gravedad
 
 def calcular_anotaciones(record: Dict[str, Any]) -> int:
-    puntos_iniciales = 45
+    def puntaje_anual(leves: int, graves: int, gravisimas: int) -> int:
+        descuento = leves * 5 + graves * 20 + gravisimas * 40
+        return max(45 - descuento, 0) #45 puntos base por año
 
-    def PUNTAJE_ANUAL(num_leves: int, num_graves: int, num_gravisimas: int):
-        anotaciones_leves = num_leves *5
-        anotaciones_graves = num_graves * 20
-        anotaciones_gravisimas = num_gravisimas * 40
-
-        #Descuento total del año
-        descuento_total_anotaciones = anotaciones_leves + anotaciones_graves + anotaciones_gravisimas
-
-        puntaje_final = puntos_iniciales - descuento_total_anotaciones
-        return  max(puntaje_final, 0)
-
-    puntaje_year1 = PUNTAJE_ANUAL(
+    #puntaje cada año
+    puntaje_year1 = puntaje_anual(
         get_value_default(record, 'anotaciones_leves_1', 0),
         get_value_default(record, 'anotaciones_graves_1', 0),
         get_value_default(record, 'anotaciones_gravisimas_1', 0),
     )
-    puntaje_year2 = PUNTAJE_ANUAL(
+    puntaje_year2 = puntaje_anual(
         get_value_default(record, 'anotaciones_leves_2', 0),
         get_value_default(record, 'anotaciones_graves_2', 0),
         get_value_default(record, 'anotaciones_gravisimas_2', 0),
@@ -57,7 +49,7 @@ def calcular_anotaciones(record: Dict[str, Any]) -> int:
 
 #Calcular promedios (lenguaje, matemática y general) de 1° y 2°
 
-def carcular_notas_base(record: Dict[str, Any]) -> int:
+def calcular_notas_base(record: Dict[str, Any]) -> int:
 
     #Año 1
     l1 = normalizar_calificaciones(get_value_default(record, 'promedio_lenguaje_1', 0))
@@ -88,34 +80,55 @@ def carcular_notas_base(record: Dict[str, Any]) -> int:
 #Promedio Tecnologia
 
 def calcular_tecnologia(record: Dict[str, Any]) -> int:
-
+    #notas de 1° y 2° medio
     t1 = normalizar_calificaciones(get_value_default(record, 'promedio_tecnologia_1', 0))
     t2 = normalizar_calificaciones(get_value_default(record, 'promedio_tecnologia_2', 0))
-    prueba_estandarizada = normalizar_calificaciones(get_value_default(record, 'puntaje_prueba_tecnologia', 0))
 
-    promedio_tecnologia = (t1 + t2 ) / 2.0
-    promedio_final_tecnologia = (promedio_tecnologia + prueba_estandarizada) / 2.0
+    #promedio entre las dos notas
+    promedio_tecnologia = (t1 + t2) / 2.0
 
-    if 6.0 <= promedio_final_tecnologia <= 7.0:
+    #revisar si hay puntaje en prueba estandarizada
+    prueba_estandarizada = get_value_default(record, 'puntaje_prueba_tecnologia', None)
+    if prueba_estandarizada is not None and prueba_estandarizada != 0:
+        prueba_estandarizada = normalizar_calificaciones(prueba_estandarizada)
+        promedio_tecnologia = (promedio_tecnologia + prueba_estandarizada) / 2.0 #se incluye en el calculo
+
+    #asignar puntajes
+    if promedio_tecnologia >= 6.0:
         return 10
-    elif 5.0 <= promedio_final_tecnologia < 6.0:
+    elif promedio_tecnologia >= 5.0:
         return 8
-    elif 4.0 <= promedio_final_tecnologia < 5.0:
+    elif promedio_tecnologia >= 4.0:
         return 5
-    else:
-        return 0
+    return 0
 
 
 #Puntos simce por puntajes de Lenguaje y Matematicas
 
-def calcular_simce(record: Dict[str, Any]) -> int:
+def calcular_simce(records: List[Dict[str, Any]], record: Dict[str,Any]) -> int:
+    totales = [
+        get_value_default(r, 'puntaje_simce_lenguaje_2', 0) +
+        get_value_default(r, 'puntaje_simce_matematica_2', 0)
+        for r in records
+    ]
 
-    simce_lenguaje = get_value_default(record, 'puntaje_simce_lenguaje_2', 0)
-    simce_matematicas = get_value_default(record, 'puntaje_simce_matematica_2', 0)
+    if not totales:
+        return 0
 
-    if simce_lenguaje > 0 and simce_matematicas > 0:
-        return 10
-    return 0
+    min_total = min(totales)
+    max_total = max(totales)
+
+    #2 puntaje SIMCE del alumno actual
+    total_alumno = get_value_default(record, 'puntaje_simce_lenguaje_2', 0) + \
+                   get_value_default(record, 'puntaje_simce_matematica_2', 0)
+
+    if max_total == min_total:
+        return 0
+    else:
+        puntaje = ((total_alumno - min_total) / (max_total - min_total)) * 10
+        return round(puntaje, 2)
+
+
 
 #Calculo de asistencia de 2º medio
 
@@ -147,12 +160,12 @@ def calcular_pruebas_entrevistas(record: Dict[str, Any]) -> int:
 
 #Calcular puntaje total
 
-def calcular_puntaje_total(record: Dict[str, Any]) -> Dict[str, int]:
+def calcular_puntaje_total(record: Dict[str, Any], records: List[Dict[str,Any]]) -> Dict[str, int]:
 
     anotaciones = calcular_anotaciones(record)
-    notas_base = carcular_notas_base(record)
+    notas_base = calcular_notas_base(record)
     tecnologia = calcular_tecnologia(record)
-    simce = calcular_simce(record)
+    simce = calcular_simce(records, record)
     asistencia = calcular_asistencia(record)
     entrevistas = calcular_pruebas_entrevistas(record)
 
@@ -167,13 +180,3 @@ def calcular_puntaje_total(record: Dict[str, Any]) -> Dict[str, int]:
         'entrevistas': int(entrevistas),
         'total_final_puntajes': int(total_final_puntajes)
     }
-
-
-
-
-
-
-
-
-
-
